@@ -2,10 +2,9 @@
 #include <sifrpc.h>
 #include <string.h>
 #include <stdio.h>
-#include <libcdvd.h>
+#include <libcdvd-common.h>
 
-#include "libcdvd_add.h"
-
+#define O_RDONLY	     00
 static unsigned char MECHACON_CMD_S36_supported = 0, MECHACON_CMD_S27_supported = 0, MECHACON_CMD_S24_supported = 0;
 
 //Initialize add-on functions. Currently only retrieves the MECHACON's version to determine what sceCdAltGetRegionParams() should do.
@@ -37,11 +36,11 @@ int cdInitAdd(void)
 	 This function provides an equivalent of the sceCdGetRegionParams function from the newer CDVDMAN modules. The old CDVDFSV and CDVDMAN modules don't support this S-command.
 	It's supported by only slimline consoles, and returns regional information (e.g. MECHACON version, MG region mask, DVD player region letter etc.).
 */
-int sceCdReadRegionParams(u8 *data, u32 *stat)
+int sceCdReadRegionParams(u32 *arg1, u32 *result)
 {
 	unsigned char RegionData[15];
-	int result;
-
+	u8 data;
+	u32 *stat = 0x100;
 	memset(data, 0, 13);
 	if(MECHACON_CMD_S36_supported)
 	{
@@ -53,7 +52,7 @@ int sceCdReadRegionParams(u8 *data, u32 *stat)
 	}
 	else
 	{
-		*stat = 0x100;
+		stat;
 		result = 1;
 	}
 
@@ -61,11 +60,11 @@ int sceCdReadRegionParams(u8 *data, u32 *stat)
 }
 
 // This function provides an equivalent of the sceCdBootCertify function from the newer CDVDMAN modules. The old CDVDFSV and CDVDMAN modules don't support this S-command.
-int sceCdBootCertify(const u8* data)
+int sceCdBootCertify(const u8 *romname)
 {
 	int result;
 	unsigned char CmdResult;
-
+	u8 data;
 	if((result=sceCdApplySCmd(0x1A, data, 4, &CmdResult, 1))!=0)
 	{
 		result=CmdResult;
@@ -99,11 +98,10 @@ int sceCdRM(char *ModelName, u32 *stat)
 	 This function provides an equivalent of the sceCdReadPS1BootParam function from the newer CDVDMAN modules. The old CDVDFSV and CDVDMAN modules don't support this S-command.
 	It's supported by only slimline consoles, and returns the boot path for the inserted PlayStation disc.
 */
-int sceCdReadPS1BootParam(char *param, u32 *stat)
+int sceCdReadPS1BootParam(u8 *out, u32 *result)
 {
-	u8 out[16];
-	int result;
-
+	char *param; 
+	u32 *stat;
 	memset(param, 0, 11);
 	if(MECHACON_CMD_S27_supported)
 	{
@@ -122,11 +120,12 @@ int sceCdReadPS1BootParam(char *param, u32 *stat)
 	return result;
 }
 
-int sceCdRcBypassCtl(int bypass, u32 *stat)
+int sceCdRcBypassCtl(int mode, u32 *status)
 {	//TODO: not implemented.
 	u8 in[16], out[16];
 	int result;
-
+	int bypass; 
+	u32 *stat;
 	memset(in, 0, 11);
 	if(MECHACON_CMD_S24_supported)
 	{

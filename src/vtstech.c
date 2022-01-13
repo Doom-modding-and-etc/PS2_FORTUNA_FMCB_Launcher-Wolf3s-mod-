@@ -10,7 +10,6 @@
 #include <iopcontrol.h>
 #include <iopheap.h>
 #include <kernel.h>
-#include <sifrpc.h>
 #include <loadfile.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -18,12 +17,15 @@
 #include <time.h>
 #include <string.h>
 #include <libcdvd.h>
+#include <libcdvd-common.h>
+#include <sbv_patches.h>
+#define NEWLIB_PORT_AWARE
 #include <fileXio.h>
 #include <fileXio_rpc.h>
-#include <sbv_patches.h>
+#include <sifrpc.h>
 
 #include "OSDInit.h"
-
+#include <fcntl.h>
 u64 Timer(void)
 {
 	return (clock() / (CLOCKS_PER_SEC / 1000));
@@ -77,10 +79,10 @@ void LoadElf(const char *elf, char* path)
 
 void banner()
 {
-	scr_clear();
+  scr_clear();
   scr_printf("============================================== \n");
   scr_printf("=FORTUNA FMCB Launcher v0.2========12-29-2019= \n");
-  scr_printf("=BOOT.ELF Written by VTSTech of PSX-Place.com= \n");
+  scr_printf("=BOOT.ELF Written by VTSTech of PSX-Place.com and modified by Wolf3s= \n");
   scr_printf("=FORTUNA Project by krat0s of PS2-Home.com==== \n");
   scr_printf("=www.vts-tech.org============================= \n\n");	
 }

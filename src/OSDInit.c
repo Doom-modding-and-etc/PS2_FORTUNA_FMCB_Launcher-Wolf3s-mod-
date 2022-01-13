@@ -4,7 +4,7 @@
 #include <libcdvd.h>
 #include "libcdvd_add.h"
 #include <osd_config.h>
-
+#define O_RDONLY	     00
 #include "OSDInit.h"
 
 /*	Parsing of values from the EEPROM and setting them into the EE kernel

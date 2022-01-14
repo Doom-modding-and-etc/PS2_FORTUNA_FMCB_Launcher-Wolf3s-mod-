@@ -81,7 +81,7 @@ void banner()
 {
   scr_clear();
   scr_printf("============================================== \n");
-  scr_printf("=FORTUNA FMCB Launcher v0.2========12-29-2019= \n");
+  scr_printf("=FORTUNA FMCB Launcher v0.3========01-13-2021= \n");
   scr_printf("=BOOT.ELF Written by VTSTech of PSX-Place.com and modified by Wolf3s= \n");
   scr_printf("=FORTUNA Project by krat0s of PS2-Home.com==== \n");
   scr_printf("=www.vts-tech.org============================= \n\n");	
